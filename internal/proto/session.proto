@@ -1,0 +1,25 @@
+syntax = "proto3";
+package session;
+
+service SessionService {
+  rpc ValidateSession (SessionRequest) returns (SessionResponse);
+  rpc CreateSession (CreateSessionRequest) returns (SessionResponse);
+}
+
+message SessionRequest {
+  string session_id = 1;
+  string client_id = 2;
+  map<string, string> metadata = 3;
+}
+
+message CreateSessionRequest {
+  string client_id = 1;
+  map<string, string> claims = 2;
+  int64 expiry = 3;
+}
+
+message SessionResponse {
+  bool valid = 1;
+  string session_id = 2;
+  map<string, string> claims = 3;
+}
