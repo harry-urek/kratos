@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/harry-urek/urek/v/internal/cookie"
 )
 
 type Manager struct {
