@@ -1,5 +1,7 @@
-syntax = "proto3";
+
 package session;
+
+syntax = "proto3";
 
 service SessionService {
   rpc ValidateSession (SessionRequest) returns (SessionResponse);

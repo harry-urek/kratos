@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -19,6 +20,14 @@ func NewStore(redisURL string) (*store, error) {
 	}
 	client := redis.NewClient(opt)
 	return &store{client: client}, nil
+
+}
+func (s *store) saveSession(ctx context.Context, ses *session) error {
+	data, err := json.Marshal(ses)
+	if err != nil {
+		return err
+	}
+	return s.client.Set(ctx, "session:"+ses.ID, data, time.Until(ses.endTime)).Err()
 
 }
 
