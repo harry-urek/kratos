@@ -5,6 +5,7 @@ go 1.22.3
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gorilla/websocket v1.5.3
+	golang.org/x/time v0.7.0
 )
 
 require (
