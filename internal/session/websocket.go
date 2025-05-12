@@ -38,7 +38,8 @@ func NewWebSocketServer(manager *Manager) *wsServer {
 	}
 }
 
-func (ws *wsServer) handleConnection(w http.ResponseWriter, r *http.Request) {
+// HandleConnection handles a new WebSocket connection
+func (ws *wsServer) HandleConnection(w http.ResponseWriter, r *http.Request) {
 	conn, err := ws.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("Failed to upgrade connection : %v", err)

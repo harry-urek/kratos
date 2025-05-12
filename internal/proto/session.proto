@@ -1,7 +1,8 @@
-
-package session;
-
 syntax = "proto3";
+
+package sessionpb;
+
+option go_package = "github.com/harry-urek/urek/v/proto/sessionpb";
 
 service SessionService {
   rpc ValidateSession (SessionRequest) returns (SessionResponse);
