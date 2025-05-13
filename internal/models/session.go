@@ -21,7 +21,7 @@ type Session struct {
 	Metadata  map[string]string `json:"metadata,omitempty"`
 }
 
-// NewSession creates a new session
+// creates a new session
 func NewSession(userID, clientID string, claims map[string]string, duration time.Duration) *Session {
 	now := time.Now()
 	return &Session{
