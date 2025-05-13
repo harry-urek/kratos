@@ -15,10 +15,9 @@ var (
 	once sync.Once
 )
 
-// InitLogger initializes the logger with the given configuration
 func InitLogger(cfg *config.LoggerConfig) *zap.Logger {
 	once.Do(func() {
-		// Configure the encoder
+		// encoder Config
 		encoderCfg := zapcore.EncoderConfig{
 			TimeKey:        "ts",
 			LevelKey:       "level",
@@ -63,6 +62,7 @@ func InitLogger(cfg *config.LoggerConfig) *zap.Logger {
 		case "stdout":
 			output = zapcore.AddSync(os.Stdout)
 		default:
+			// 0644 -> read/write for owner, read for group and others
 			file, err := os.OpenFile(cfg.OutputPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				file = os.Stdout
@@ -77,10 +77,9 @@ func InitLogger(cfg *config.LoggerConfig) *zap.Logger {
 	return log
 }
 
-// GetLogger returns the configured logger instance
 func GetLogger() *zap.Logger {
 	if log == nil {
-		// Return a default logger if not initialized
+		// default logger
 		return zap.NewExample()
 	}
 	return log
@@ -91,12 +90,11 @@ func Named(name string) *zap.Logger {
 	return GetLogger().Named(name)
 }
 
-// With returns a logger with the given fields
+// logger with given fields
 func With(fields ...zapcore.Field) *zap.Logger {
 	return GetLogger().With(fields...)
 }
 
-// SetLevel dynamically changes the log level
 func SetLevel(level string) {
 	var zapLevel zapcore.Level
 	switch level {
@@ -112,13 +110,11 @@ func SetLevel(level string) {
 		zapLevel = zapcore.InfoLevel
 	}
 
-	// This assumes the logger was created with an atomic level
 	if log != nil {
 		log.Core().Enabled(zapLevel)
 	}
 }
 
-// Log HTTP requests with appropriate information
 func LogHTTPRequest(method, path, ip string, statusCode int, latency time.Duration) {
 	GetLogger().Info("HTTP Request",
 		zap.String("method", method),
@@ -129,7 +125,7 @@ func LogHTTPRequest(method, path, ip string, statusCode int, latency time.Durati
 	)
 }
 
-// LogGRPCRequest logs gRPC requests
+// LogGRPCRequest
 func LogGRPCRequest(method string, latency time.Duration, err error) {
 	logger := GetLogger()
 	if err != nil {
