@@ -32,7 +32,6 @@ type Manager struct {
 	wsServer        *wsServer
 }
 
-// NewManager creates a new session manager
 func NewManager(cfg *config.Config) (*Manager, error) {
 	// Initialize Redis store
 	store, err := NewRedisStore(cfg.Redis.URL, "")
@@ -46,7 +45,6 @@ func NewManager(cfg *config.Config) (*Manager, error) {
 	cookieConfig.Secure = true // Set based on environment if needed
 	cookieManager := cookie.New(cookieConfig)
 
-	// Initialize JWT manager
 	jwtManager := jwt.New(&cfg.Auth)
 
 	manager := &Manager{
@@ -63,7 +61,6 @@ func NewManager(cfg *config.Config) (*Manager, error) {
 	return manager, nil
 }
 
-// CreateSession creates a new session
 func (m *Manager) CreateSession(ctx context.Context, req *models.CreateSessionRequest) (*models.Session, error) {
 	if req.UserID == "" {
 		return nil, ErrMissingUserID
@@ -74,10 +71,8 @@ func (m *Manager) CreateSession(ctx context.Context, req *models.CreateSessionRe
 		duration = req.Duration
 	}
 
-	// Create the session object
 	session := models.NewSession(req.UserID, req.ClientID, req.Claims, duration)
 
-	// Add additional info if available
 	if req.IP != "" {
 		session.IP = req.IP
 	}
@@ -86,7 +81,6 @@ func (m *Manager) CreateSession(ctx context.Context, req *models.CreateSessionRe
 		session.UserAgent = req.UserAgent
 	}
 
-	// Save the session to the store
 	if err := m.store.SaveSession(ctx, session); err != nil {
 		m.log.Error("Failed to save session", zap.Error(err), zap.String("user_id", req.UserID))
 		return nil, err
