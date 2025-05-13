@@ -1,0 +1,40 @@
+{
+  "server": {
+    "http_port": 8080,
+    "grpc_port": 9090,
+    "websocket_port": 8081,
+    "read_timeout": 10000000000,
+    "write_timeout": 10000000000,
+    "allowed_origins": ["*"]
+  },
+  "redis": {
+    "url": "redis://localhost:6379",
+    "password": "",
+    "db": 0,
+    "timeout": 5000000000
+  },
+  "auth": {
+    "jwt_secret": "your-secret-key-change-in-production",
+    "jwt_expiry_duration": 86400000000000,
+    "session_expiry_duration": 259200000000000,
+    "oauth": {
+      "enabled": false
+    }
+  },
+  "kafka": {
+    "enabled": false,
+    "brokers": ["localhost:9092"],
+    "topic": "session-events",
+    "consumer_group": "kratos-session-service"
+  },
+  "logger": {
+    "level": "debug",
+    "output_path": "stdout",
+    "format": "json"
+  },
+  "monitoring": {
+    "enabled": true,
+    "port": 9100,
+    "path": "/metrics"
+  }
+}
